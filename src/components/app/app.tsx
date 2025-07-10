@@ -13,13 +13,23 @@ import '../../index.css';
 import styles from './app.module.css';
 
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { ProtectedRoute } from '../protectedRoute';
+import { useDispatch } from '../../services/store';
+import { useEffect } from 'react';
+import { getIngredientsAsync } from '../../services/slices/IngridientSlice';
 
 const App = () => {
   const location = useLocation();
-
   const background = location.state?.background;
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  console.log('BURGER_API_URL', process.env.BURGER_API_URL);
+
+  useEffect(() => {
+    dispatch(getIngredientsAsync());
+  }, [dispatch]);
 
   return (
     <div className={styles.app}>
@@ -82,7 +92,7 @@ const App = () => {
           <Route
             path='/feed/:number'
             element={
-              <Modal title='' onClose={() => {}}>
+              <Modal title='' onClose={() => navigate(-1)}>
                 <OrderInfo />
               </Modal>
             }
@@ -90,7 +100,7 @@ const App = () => {
           <Route
             path='/ingredients/:id'
             element={
-              <Modal title='' onClose={() => {}}>
+              <Modal title='' onClose={() => navigate(-1)}>
                 <IngredientDetails />
               </Modal>
             }
@@ -99,7 +109,7 @@ const App = () => {
             path='/profile/orders/:number'
             element={
               <ProtectedRoute>
-                <Modal title='' onClose={() => {}}>
+                <Modal title='' onClose={() => navigate(-1)}>
                   <OrderInfo />
                 </Modal>
               </ProtectedRoute>
