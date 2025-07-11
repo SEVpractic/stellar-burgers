@@ -6,7 +6,7 @@ import { BurgerIngredientsUI } from '../ui/burger-ingredients';
 import { useSelector } from '../../services/store';
 
 export const BurgerIngredients: FC = () => {
-  const { ingredients } = useSelector((state) => state.IngredientsSlice);
+  const { ingredients } = useSelector((state) => state.ingredientsReducer);
 
   const buns = ingredients?.filter((el) => el.type === 'bun') ?? [];
   const mains = ingredients?.filter((el) => el.type === 'main') ?? [];

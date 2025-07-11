@@ -18,6 +18,7 @@ import { ProtectedRoute } from '../protectedRoute';
 import { useDispatch } from '../../services/store';
 import { useEffect } from 'react';
 import { getIngredientsAsync } from '../../services/slices/IngridientSlice';
+import { checkUserAuthAsync } from '../../services/slices/UserSlise';
 
 const App = () => {
   const location = useLocation();
@@ -25,9 +26,8 @@ const App = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  console.log('BURGER_API_URL', process.env.BURGER_API_URL);
-
   useEffect(() => {
+    dispatch(checkUserAuthAsync());
     dispatch(getIngredientsAsync());
   }, [dispatch]);
 
