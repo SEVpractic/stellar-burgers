@@ -22,7 +22,7 @@ export const checkUserAuthAsync = createAsyncThunk(
 
     if (!result.success) {
       deleteCookie('accessToken');
-      deleteCookie('refreshToken');
+      localStorage.removeItem('refreshToken');
     }
 
     return result.user;
@@ -36,7 +36,7 @@ export const registerUserAsync = createAsyncThunk(
 
     if (result.success) {
       setCookie('accessToken', result.accessToken, { expires: 28000 });
-      setCookie('refreshToken', result.refreshToken, { expires: 28000 });
+      localStorage.setItem('refreshToken', result.refreshToken);
     }
 
     return result.user;
@@ -50,7 +50,22 @@ export const loginUserAsync = createAsyncThunk(
 
     if (result.success) {
       setCookie('accessToken', result.accessToken, { expires: 28000 });
-      setCookie('refreshToken', result.refreshToken, { expires: 28000 });
+      localStorage.setItem('refreshToken', result.refreshToken);
+    }
+
+    return result.user;
+  }
+);
+
+export const logoutUserAsync = createAsyncThunk(
+  //logoutApi
+  'user/loginUser',
+  async (loginData: TLoginData) => {
+    const result = await loginUserApi(loginData);
+
+    if (result.success) {
+      deleteCookie('accessToken');
+      localStorage.removeItem('refreshToken');
     }
 
     return result.user;
