@@ -18,19 +18,12 @@ export const Register: FC = () => {
   const [errorText, setErrorText] = useState('');
   const [registerData, setRegisterData] = useState(initialRegisterData);
 
-  const { user, isAuthChecked, error } = useSelector(
-    (state) => state.userReducer
-  );
+  const { error } = useSelector((state) => state.userReducer);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
 
     dispatch(registerUserAsync(registerData));
-
-    if (user && isAuthChecked) {
-      setRegisterData(initialRegisterData);
-      navigate('/login', { replace: true });
-    }
   };
 
   useEffect(() => {
@@ -45,7 +38,7 @@ export const Register: FC = () => {
       default:
         formattedErrorText = 'Ошибка регистрации';
     }
-    setErrorText(formattedErrorText);
+    formattedErrorText && setErrorText(formattedErrorText);
   }, [error]);
 
   const handleInput = (key: keyof TRegisterData, val: string) => {

@@ -15,9 +15,7 @@ export const Login: FC = () => {
   const [loginData, setLoginData] = useState(initLoginData);
   const [errorText, setErrorText] = useState('');
 
-  const { user, isAuthChecked, error } = useSelector(
-    (state) => state.userReducer
-  );
+  const { error } = useSelector((state) => state.userReducer);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
@@ -44,7 +42,7 @@ export const Login: FC = () => {
       default:
         formattedErrorText = 'Ошибка авторизации';
     }
-    setErrorText(formattedErrorText);
+    formattedErrorText && setErrorText(formattedErrorText);
   }, [error]);
 
   return (

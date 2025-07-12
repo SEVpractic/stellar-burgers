@@ -33,6 +33,12 @@ export const registerUserAsync = createAsyncThunk(
   'user/registerUser',
   async (registerData: TRegisterData) => {
     const result = await registerUserApi(registerData);
+
+    if (result.success) {
+      setCookie('accessToken', result.accessToken, { expires: 28000 });
+      setCookie('refreshToken', result.refreshToken, { expires: 28000 });
+    }
+
     return result.user;
   }
 );
