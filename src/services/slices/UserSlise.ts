@@ -1,6 +1,7 @@
 import {
   getUserApi,
   loginUserApi,
+  logoutApi,
   registerUserApi,
   TLoginData,
   TRegisterData
@@ -57,20 +58,16 @@ export const loginUserAsync = createAsyncThunk(
   }
 );
 
-export const logoutUserAsync = createAsyncThunk(
-  //logoutApi
-  'user/loginUser',
-  async (loginData: TLoginData) => {
-    const result = await loginUserApi(loginData);
+export const logoutUserAsync = createAsyncThunk('user/logoutUser', async () => {
+  const result = await logoutApi();
 
-    if (result.success) {
-      deleteCookie('accessToken');
-      localStorage.removeItem('refreshToken');
-    }
-
-    return result.user;
+  if (result.success) {
+    deleteCookie('accessToken');
+    localStorage.removeItem('refreshToken');
   }
-);
+
+  return result;
+});
 
 type TUserState = {
   user: TUser | null;
@@ -150,6 +147,20 @@ export const userSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || null;
         state.isAuthChecked = true;
+      });
+    builder
+      .addCase(logoutUserAsync.fulfilled, (state, action) => {
+        state.user = null;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(logoutUserAsync.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(logoutUserAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || null;
       });
   }
 });
