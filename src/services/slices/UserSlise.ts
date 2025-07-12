@@ -1,28 +1,31 @@
-import { getUserApi, registerUserApi, TRegisterData } from '@api';
 import {
-  createAsyncThunk,
-  createSlice,
-  isRejectedWithValue
-} from '@reduxjs/toolkit';
+  getUserApi,
+  loginUserApi,
+  registerUserApi,
+  TLoginData,
+  TRegisterData
+} from '@api';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
-import { getCookie } from '../../utils/cookie';
+import { deleteCookie, getCookie, setCookie } from '../../utils/cookie';
 
 export const checkUserAuthAsync = createAsyncThunk(
   'user/checkAuth',
-  async (_, { dispatch }) => {
-    const token = getCookie('accessToken');
-    if (token) {
-      try {
-        const result = await getUserApi();
-        console.log('resultUser:', result);
-        dispatch(setUser(result));
-        return result.user;
-      } catch {
-        localStorage.clear();
-      }
+  async () => {
+    const accessToken = getCookie('accessToken');
+
+    if (!accessToken) {
+      throw new Error('No access token');
     }
-    dispatch(setAuthChecked());
-    return null;
+
+    const result = await getUserApi();
+
+    if (!result.success) {
+      deleteCookie('accessToken');
+      deleteCookie('refreshToken');
+    }
+
+    return result.user;
   }
 );
 
@@ -30,6 +33,20 @@ export const registerUserAsync = createAsyncThunk(
   'user/registerUser',
   async (registerData: TRegisterData) => {
     const result = await registerUserApi(registerData);
+    return result.user;
+  }
+);
+
+export const loginUserAsync = createAsyncThunk(
+  'user/loginUser',
+  async (loginData: TLoginData) => {
+    const result = await loginUserApi(loginData);
+
+    if (result.success) {
+      setCookie('accessToken', result.accessToken, { expires: 28000 });
+      setCookie('refreshToken', result.refreshToken, { expires: 28000 });
+    }
+
     return result.user;
   }
 );
@@ -62,18 +79,22 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(checkUserAuthAsync.fulfilled, (state, action) => {
+        console.log('checkUserAuthAsync.fulfilled', action);
         state.user = action.payload;
         state.loading = false;
         state.error = null;
+        state.isAuthChecked = true;
       })
       .addCase(checkUserAuthAsync.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(checkUserAuthAsync.rejected, (state, action) => {
+        console.log('checkUserAuthAsync.rejected', action);
         state.user = null;
         state.loading = false;
         state.error == action.error || null;
+        state.isAuthChecked = true;
       });
     builder
       .addCase(registerUserAsync.fulfilled, (state, action) => {
@@ -92,8 +113,25 @@ export const userSlice = createSlice({
         state.error = action.error.message || null;
         state.isAuthChecked = true;
       });
+    builder
+      .addCase(loginUserAsync.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.loading = false;
+        state.error = null;
+        state.isAuthChecked = true;
+      })
+      .addCase(loginUserAsync.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(loginUserAsync.rejected, (state, action) => {
+        state.user = null;
+        state.loading = false;
+        state.error = action.error.message || null;
+        state.isAuthChecked = true;
+      });
   }
 });
 
-export const { setAuthChecked: setAuthChecked, setUser } = userSlice.actions;
+export const { setAuthChecked, setUser } = userSlice.actions;
 export const userReducer = userSlice.reducer;

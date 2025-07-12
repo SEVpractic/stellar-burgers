@@ -18,8 +18,9 @@ export const Register: FC = () => {
   const [errorText, setErrorText] = useState('');
   const [registerData, setRegisterData] = useState(initialRegisterData);
 
-  const { user, isAuthChecked } = useSelector((state) => state.userReducer);
-  const error = useSelector((state) => state.userReducer.error);
+  const { user, isAuthChecked, error } = useSelector(
+    (state) => state.userReducer
+  );
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
