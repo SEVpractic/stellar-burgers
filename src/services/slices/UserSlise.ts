@@ -1,5 +1,9 @@
-import { getUserApi } from '@api';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { getUserApi, registerUserApi, TRegisterData } from '@api';
+import {
+  createAsyncThunk,
+  createSlice,
+  isRejectedWithValue
+} from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
 import { getCookie } from '../../utils/cookie';
 
@@ -19,6 +23,14 @@ export const checkUserAuthAsync = createAsyncThunk(
     }
     dispatch(setAuthChecked());
     return null;
+  }
+);
+
+export const registerUserAsync = createAsyncThunk(
+  'user/registerUser',
+  async (registerData: TRegisterData) => {
+    const result = await registerUserApi(registerData);
+    return result.user;
   }
 );
 
@@ -62,6 +74,23 @@ export const userSlice = createSlice({
         state.user = null;
         state.loading = false;
         state.error == action.error || null;
+      });
+    builder
+      .addCase(registerUserAsync.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.loading = false;
+        state.error = null;
+        state.isAuthChecked = true;
+      })
+      .addCase(registerUserAsync.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(registerUserAsync.rejected, (state, action) => {
+        state.user = null;
+        state.loading = false;
+        state.error = action.error.message || null;
+        state.isAuthChecked = true;
       });
   }
 });

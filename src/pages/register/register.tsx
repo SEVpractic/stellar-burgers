@@ -1,24 +1,69 @@
-import { FC, SyntheticEvent, useState } from 'react';
+import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { RegisterUI } from '@ui-pages';
+import { useDispatch, useSelector } from '../../services/store';
+import { registerUserAsync } from '../../services/slices/UserSlise';
+import { useNavigate } from 'react-router-dom';
+import { TRegisterData } from '@api';
+
+const initialRegisterData: TRegisterData = {
+  email: '',
+  name: '',
+  password: ''
+};
 
 export const Register: FC = () => {
-  const [userName, setUserName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [errorText, setErrorText] = useState('');
+  const [registerData, setRegisterData] = useState(initialRegisterData);
+
+  const { user, isAuthChecked } = useSelector((state) => state.userReducer);
+  const error = useSelector((state) => state.userReducer.error);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
+
+    dispatch(registerUserAsync(registerData));
+
+    if (user && isAuthChecked) {
+      setRegisterData(initialRegisterData);
+      navigate('/login', { replace: true });
+    }
+  };
+
+  useEffect(() => {
+    let formattedErrorText = '';
+
+    switch (error) {
+      case null:
+        break;
+      case 'User already exists':
+        formattedErrorText = 'Пользователь уже существует';
+        break;
+      default:
+        formattedErrorText = 'Ошибка регистрации';
+    }
+    setErrorText(formattedErrorText);
+  }, [error]);
+
+  const handleInput = (key: keyof TRegisterData, val: string) => {
+    setErrorText('');
+    setRegisterData((prev) => ({
+      ...prev,
+      [key]: val
+    }));
   };
 
   return (
     <RegisterUI
-      errorText=''
-      email={email}
-      userName={userName}
-      password={password}
-      setEmail={setEmail}
-      setPassword={setPassword}
-      setUserName={setUserName}
+      errorText={errorText ? errorText : ''}
+      email={registerData.email}
+      userName={registerData.name}
+      password={registerData.password}
+      setEmail={(val) => handleInput('email', val)}
+      setPassword={(val) => handleInput('password', val)}
+      setUserName={(val) => handleInput('name', val)}
       handleSubmit={handleSubmit}
     />
   );
