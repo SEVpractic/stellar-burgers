@@ -4,7 +4,8 @@ import {
   logoutApi,
   registerUserApi,
   TLoginData,
-  TRegisterData
+  TRegisterData,
+  updateUserApi
 } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
@@ -69,6 +70,15 @@ export const logoutUserAsync = createAsyncThunk('user/logoutUser', async () => {
   return result;
 });
 
+export const updateUserAsync = createAsyncThunk(
+  'user/updateUser',
+  async (updateData: Partial<TRegisterData>) => {
+    const result = await updateUserApi(updateData);
+
+    return result.user;
+  }
+);
+
 type TUserState = {
   user: TUser | null;
   loading: boolean;
@@ -97,7 +107,6 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(checkUserAuthAsync.fulfilled, (state, action) => {
-        console.log('checkUserAuthAsync.fulfilled', action);
         state.user = action.payload;
         state.loading = false;
         state.error = null;
@@ -108,7 +117,6 @@ export const userSlice = createSlice({
         state.error = null;
       })
       .addCase(checkUserAuthAsync.rejected, (state, action) => {
-        console.log('checkUserAuthAsync.rejected', action);
         state.user = null;
         state.loading = false;
         state.error == action.error || null;
@@ -161,6 +169,23 @@ export const userSlice = createSlice({
       .addCase(logoutUserAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || null;
+      });
+    builder
+      .addCase(updateUserAsync.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.loading = false;
+        state.error = null;
+        state.isAuthChecked = true;
+      })
+      .addCase(updateUserAsync.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateUserAsync.rejected, (state, action) => {
+        state.user = null;
+        state.loading = false;
+        state.error = action.error.message || null;
+        state.isAuthChecked = true;
       });
   }
 });

@@ -1,21 +1,26 @@
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
-import { useSelector } from '../../services/store';
+import { useDispatch, useSelector } from '../../services/store';
+import { TUser } from '@utils-types';
+import { updateUserAsync } from '../../services/slices/UserSlise';
+
+const initUser: TUser & { password: string } = {
+  email: '',
+  name: '',
+  password: ''
+};
 
 export const Profile: FC = () => {
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.userReducer);
 
-  const [formValue, setFormValue] = useState({
-    name: user?.name ?? '',
-    email: user?.email ?? '',
-    password: ''
-  });
+  const [formValue, setFormValue] = useState(initUser);
 
   useEffect(() => {
     setFormValue((prevState) => ({
       ...prevState,
-      name: user?.name || '',
-      email: user?.email || ''
+      name: user?.name ?? '',
+      email: user?.email ?? ''
     }));
   }, [user]);
 
@@ -26,15 +31,12 @@ export const Profile: FC = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
+    dispatch(updateUserAsync(formValue));
   };
 
   const handleCancel = (e: SyntheticEvent) => {
     e.preventDefault();
-    setFormValue({
-      name: user?.name ?? '',
-      email: user?.email ?? '',
-      password: ''
-    });
+    setFormValue(initUser);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,6 +55,4 @@ export const Profile: FC = () => {
       handleInputChange={handleInputChange}
     />
   );
-
-  return null;
 };
