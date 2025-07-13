@@ -28,9 +28,50 @@ export const constructorSlice = createSlice({
         const id = nanoid();
         return { payload: { ...ingredient, id } };
       }
+    },
+    removeIngridient: (
+      state,
+      action: PayloadAction<TConstructorIngredient>
+    ) => {
+      state.ingredients = state.ingredients.filter(
+        (el) => el.id !== action.payload.id
+      );
+    },
+    moveIngridientUp: (
+      state,
+      action: PayloadAction<TConstructorIngredient>
+    ) => {
+      const index = state.ingredients.findIndex(
+        (el) => el.id === action.payload.id
+      );
+
+      if (index > 0) {
+        const temp = state.ingredients[index - 1];
+        state.ingredients[index - 1] = state.ingredients[index];
+        state.ingredients[index] = temp;
+      }
+    },
+    moveIngridientDown: (
+      state,
+      action: PayloadAction<TConstructorIngredient>
+    ) => {
+      const index = state.ingredients.findIndex(
+        (el) => el.id === action.payload.id
+      );
+
+      if (index >= 0 && index < state.ingredients.length - 1) {
+        const temp = state.ingredients[index + 1];
+        state.ingredients[index + 1] = state.ingredients[index];
+        state.ingredients[index] = temp;
+      }
     }
   }
 });
 
 export const constructorReducer = constructorSlice.reducer;
-export const { addIngridient } = constructorSlice.actions;
+export const {
+  addIngridient,
+  removeIngridient,
+  moveIngridientUp,
+  moveIngridientDown
+} = constructorSlice.actions;
