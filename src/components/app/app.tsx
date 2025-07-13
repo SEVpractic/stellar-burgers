@@ -18,7 +18,7 @@ import { ProtectedRoute } from '../protectedRoute';
 import { useDispatch } from '../../services/store';
 import { useEffect } from 'react';
 import { getIngredientsAsync } from '../../services/slices/IngridientSlice';
-import { checkUserAuthAsync } from '../../services/slices/UserSlise';
+import { checkUserAuthAsync } from '../../services/slices/UserSlice';
 
 const App = () => {
   const location = useLocation();

@@ -2,7 +2,7 @@ import { FC, SyntheticEvent, useState, useEffect } from 'react';
 import { LoginUI } from '@ui-pages';
 import { useDispatch, useSelector } from '../../services/store';
 import { TLoginData } from '@api';
-import { loginUserAsync } from '../../services/slices/UserSlise';
+import { loginUserAsync } from '../../services/slices/UserSlice';
 
 const initLoginData: TLoginData = {
   email: '',

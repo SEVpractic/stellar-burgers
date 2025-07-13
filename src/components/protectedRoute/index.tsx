@@ -1,7 +1,7 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from '../../services/store';
 import { useEffect } from 'react';
-import { checkUserAuthAsync } from '../../services/slices/UserSlise';
+import { checkUserAuthAsync } from '../../services/slices/UserSlice';
 import { Preloader } from '@ui';
 
 type ProtectedRouteProps = {

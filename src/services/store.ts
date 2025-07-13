@@ -7,11 +7,13 @@ import {
 } from 'react-redux';
 
 import { ingredientsReducer } from './slices/IngridientSlice';
-import { userReducer } from './slices/UserSlise';
+import { userReducer } from './slices/UserSlice';
+import { constructorReducer } from './slices/ConstructorSlice';
 
 const rootReducer = combineReducers({
   ingredientsReducer,
-  userReducer
+  userReducer,
+  constructorReducer
 });
 
 const store = configureStore({

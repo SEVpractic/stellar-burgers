@@ -2,7 +2,7 @@ import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from '../../services/store';
 import { TUser } from '@utils-types';
-import { updateUserAsync } from '../../services/slices/UserSlise';
+import { updateUserAsync } from '../../services/slices/UserSlice';
 
 const initUser: TUser & { password: string } = {
   email: '',
