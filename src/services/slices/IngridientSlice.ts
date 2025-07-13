@@ -13,7 +13,7 @@ type TIngredientsState = {
   error: string | null;
 };
 
-export const initialIngredientsState: TIngredientsState = {
+const initialIngredientsState: TIngredientsState = {
   ingredients: [],
   loading: false,
   error: null
@@ -22,7 +22,6 @@ export const initialIngredientsState: TIngredientsState = {
 export const ingredientsSlice = createSlice({
   name: 'ingredients',
   initialState: initialIngredientsState,
-  selectors: {},
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -37,7 +36,7 @@ export const ingredientsSlice = createSlice({
       })
       .addCase(getIngredientsAsync.rejected, (state, action) => {
         state.loading = false;
-        state.error == action.error || null;
+        state.error == action.error.message || null;
       });
   }
 });
