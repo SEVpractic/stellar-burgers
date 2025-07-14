@@ -15,6 +15,10 @@ export const BurgerConstructor: FC = () => {
     (state) => state.orderReducer
   );
 
+  useEffect(() => {
+    dispatch(clearOrder());
+  }, [dispatch]);
+
   const onOrderClick = () => {
     if (!constructorItems.bun || orderRequest) return;
     if (!user) return navigate('/login');
