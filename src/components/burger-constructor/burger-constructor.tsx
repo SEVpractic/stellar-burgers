@@ -29,7 +29,6 @@ export const BurgerConstructor: FC = () => {
     ];
 
     dispatch(createOrderAsync(ids));
-    console.log('orderModalData', orderModalData);
   };
 
   const closeOrderModal = () => {
