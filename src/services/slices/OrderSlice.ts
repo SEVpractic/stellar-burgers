@@ -14,7 +14,7 @@ export const getOrderAsync = createAsyncThunk(
 
 export const getUsersOrdersAsync = createAsyncThunk(
   'order/getAllByUser',
-  async () => await getOrdersApi()
+  getOrdersApi
 );
 
 export type TOrderState = {

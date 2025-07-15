@@ -4,7 +4,7 @@ import { TOrder } from '@utils-types';
 
 export const getFeedsAsync = createAsyncThunk(
   'feeds/get',
-  async () => await getFeedsApi()
+  getFeedsApi
 );
 
 export type TFeedState = {
