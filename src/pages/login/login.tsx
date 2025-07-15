@@ -3,6 +3,7 @@ import { LoginUI } from '@ui-pages';
 import { useDispatch, useSelector } from '../../services/store';
 import { TLoginData } from '@api';
 import { loginUserAsync } from '../../services/slices/UserSlice';
+import { useForm } from '../../hooks/useForm';
 
 const initLoginData: TLoginData = {
   email: '',
@@ -12,7 +13,12 @@ const initLoginData: TLoginData = {
 export const Login: FC = () => {
   const dispatch = useDispatch();
 
-  const [loginData, setLoginData] = useState(initLoginData);
+  const {
+    values: loginData,
+    handleChange: handleInput,
+    setValues: setLoginData
+  } = useForm(initLoginData);
+
   const [errorText, setErrorText] = useState('');
 
   const { error } = useSelector((state) => state.userReducer);
@@ -21,14 +27,6 @@ export const Login: FC = () => {
     e.preventDefault();
 
     dispatch(loginUserAsync(loginData));
-  };
-
-  const handleInput = (key: keyof TLoginData, val: string) => {
-    setErrorText('');
-    setLoginData((prev) => ({
-      ...prev,
-      [key]: val
-    }));
   };
 
   useEffect(() => {
@@ -49,9 +47,9 @@ export const Login: FC = () => {
     <LoginUI
       errorText={errorText}
       email={loginData.email}
-      setEmail={(val) => handleInput('email', val)}
+      setEmail={handleInput}
       password={loginData.password}
-      setPassword={(val) => handleInput('password', val)}
+      setPassword={handleInput}
       handleSubmit={handleSubmit}
     />
   );

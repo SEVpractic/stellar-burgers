@@ -3,6 +3,7 @@ import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from '../../services/store';
 import { TUser } from '@utils-types';
 import { updateUserAsync } from '../../services/slices/UserSlice';
+import { useForm } from '../../hooks/useForm';
 
 const initUser: TUser & { password: string } = {
   email: '',
@@ -14,10 +15,14 @@ export const Profile: FC = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.userReducer);
 
-  const [formValue, setFormValue] = useState(initUser);
+  const {
+    values: formValue,
+    handleChange: setFormValue,
+    setValues: setFormData
+  } = useForm(initUser);
 
   useEffect(() => {
-    setFormValue((prevState) => ({
+    setFormData((prevState) => ({
       ...prevState,
       name: user?.name ?? '',
       email: user?.email ?? ''
@@ -36,14 +41,7 @@ export const Profile: FC = () => {
 
   const handleCancel = (e: SyntheticEvent) => {
     e.preventDefault();
-    setFormValue(initUser);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormValue((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value
-    }));
+    setFormData(initUser);
   };
 
   return (
@@ -52,7 +50,7 @@ export const Profile: FC = () => {
       isFormChanged={isFormChanged}
       handleCancel={handleCancel}
       handleSubmit={handleSubmit}
-      handleInputChange={handleInputChange}
+      handleInputChange={setFormValue}
     />
   );
 };
