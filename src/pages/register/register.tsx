@@ -1,7 +1,10 @@
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { RegisterUI } from '@ui-pages';
 import { useDispatch, useSelector } from '../../services/store';
-import { registerUserAsync } from '../../services/slices/UserSlice';
+import {
+  registerUserAsync,
+  userSelectors
+} from '../../services/slices/UserSlice';
 import { useForm } from '../../hooks/useForm';
 import { TRegisterData } from '@api';
 
@@ -19,7 +22,7 @@ export const Register: FC = () => {
     setValues: setRegisterData
   } = useForm(initialRegisterData);
   const [errorText, setErrorText] = useState('');
-  const { error } = useSelector((state) => state.userReducer);
+  const error = useSelector(userSelectors.selectUserError);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();

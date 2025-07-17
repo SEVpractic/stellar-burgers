@@ -2,7 +2,7 @@ import { FC, SyntheticEvent, useState, useEffect } from 'react';
 import { LoginUI } from '@ui-pages';
 import { useDispatch, useSelector } from '../../services/store';
 import { TLoginData } from '@api';
-import { loginUserAsync } from '../../services/slices/UserSlice';
+import { loginUserAsync, userSelectors } from '../../services/slices/UserSlice';
 import { useForm } from '../../hooks/useForm';
 
 const initLoginData: TLoginData = {
@@ -21,7 +21,7 @@ export const Login: FC = () => {
 
   const [errorText, setErrorText] = useState('');
 
-  const { error } = useSelector((state) => state.userReducer);
+  const error = useSelector(userSelectors.selectUserError);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();

@@ -104,6 +104,11 @@ export const userSlice = createSlice({
       state.user = action.payload;
     }
   },
+  selectors: {
+    selectUser: (state) => state.user,
+    selectAuthChecked: (state) => state.isAuthChecked,
+    selectUserError: (state) => state.error
+  },
   extraReducers: (builder) => {
     builder
       .addCase(checkUserAuthAsync.fulfilled, (state, action) => {
@@ -192,3 +197,4 @@ export const userSlice = createSlice({
 
 export const { setAuthChecked, setUser } = userSlice.actions;
 export const userReducer = userSlice.reducer;
+export const userSelectors = userSlice.selectors;

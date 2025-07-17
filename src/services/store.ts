@@ -7,14 +7,14 @@ import {
 } from 'react-redux';
 
 import { ingredientsReducer } from './slices/IngridientSlice';
-import { userReducer } from './slices/UserSlice';
+import { userSlice } from './slices/UserSlice';
 import { constructorReducer } from './slices/ConstructorSlice';
 import { orderReducer } from './slices/OrderSlice';
 import { feedReducer } from './slices/FeedSlice';
 
 const rootReducer = combineReducers({
   ingredientsReducer,
-  userReducer,
+  [userSlice.name]: userSlice.reducer,
   constructorReducer,
   orderReducer,
   feedReducer

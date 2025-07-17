@@ -1,8 +1,11 @@
 import { ProfileUI } from '@ui-pages';
-import { FC, SyntheticEvent, useEffect, useState } from 'react';
+import { FC, SyntheticEvent, useEffect } from 'react';
 import { useDispatch, useSelector } from '../../services/store';
 import { TUser } from '@utils-types';
-import { updateUserAsync } from '../../services/slices/UserSlice';
+import {
+  updateUserAsync,
+  userSelectors
+} from '../../services/slices/UserSlice';
 import { useForm } from '../../hooks/useForm';
 
 const initUser: TUser & { password: string } = {
@@ -13,7 +16,7 @@ const initUser: TUser & { password: string } = {
 
 export const Profile: FC = () => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.userReducer);
+  const user = useSelector(userSelectors.selectUser);
 
   const {
     values: formValue,
