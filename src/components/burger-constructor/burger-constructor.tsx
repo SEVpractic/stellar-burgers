@@ -8,14 +8,19 @@ import {
   orderActions,
   orderSelectors
 } from '../../services/slices/OrderSlice';
-import { constructorActions } from '../../services/slices/ConstructorSlice';
+import {
+  constructorActions,
+  constructorSelectors
+} from '../../services/slices/ConstructorSlice';
 import { userSelectors } from '../../services/slices/UserSlice';
 
 export const BurgerConstructor: FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector(userSelectors.selectUser);
-  const constructorItems = useSelector((state) => state.constructorReducer);
+  const bun = useSelector(constructorSelectors.selectBun);
+  const ingredients = useSelector(constructorSelectors.selectIngredients);
+  const constructorItems = { bun, ingredients };
   const orderRequest = useSelector(orderSelectors.selectOrderRequest);
   const orderModalData = useSelector(orderSelectors.selectOrderModalData);
 

@@ -8,14 +8,14 @@ import {
 
 import { ingredientsSlice } from './slices/IngridientSlice';
 import { userSlice } from './slices/UserSlice';
-import { constructorReducer } from './slices/ConstructorSlice';
+import { constructorSlice } from './slices/ConstructorSlice';
 import { orderSlice } from './slices/OrderSlice';
 import { feedSlice } from './slices/FeedSlice';
 
 const rootReducer = combineReducers({
   [ingredientsSlice.name]: ingredientsSlice.reducer,
   [userSlice.name]: userSlice.reducer,
-  constructorReducer,
+  [constructorSlice.name]: constructorSlice.reducer,
   [orderSlice.name]: orderSlice.reducer,
   [feedSlice.name]: feedSlice.reducer
 });

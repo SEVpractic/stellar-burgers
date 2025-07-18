@@ -13,8 +13,12 @@ const initConstructorItems: TConstructorItems = {
 };
 
 export const constructorSlice = createSlice({
-  name: 'constructor',
+  name: 'bunConstructor',
   initialState: initConstructorItems,
+  selectors: {
+    selectBun: (state) => state.bun,
+    selectIngredients: (state) => state.ingredients
+  },
   reducers: {
     addIngridient: {
       reducer: (state, action: PayloadAction<TConstructorIngredient>) => {
@@ -69,5 +73,5 @@ export const constructorSlice = createSlice({
   }
 });
 
-export const constructorReducer = constructorSlice.reducer;
 export const constructorActions = constructorSlice.actions;
+export const constructorSelectors = constructorSlice.selectors;
