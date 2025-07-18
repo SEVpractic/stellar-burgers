@@ -70,10 +70,4 @@ export const constructorSlice = createSlice({
 });
 
 export const constructorReducer = constructorSlice.reducer;
-export const {
-  addIngridient,
-  removeIngridient,
-  moveIngridientUp,
-  moveIngridientDown,
-  clearConstructor
-} = constructorSlice.actions;
+export const constructorActions = constructorSlice.actions;

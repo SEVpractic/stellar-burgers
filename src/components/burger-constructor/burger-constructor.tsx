@@ -8,7 +8,7 @@ import {
   orderActions,
   orderSelectors
 } from '../../services/slices/OrderSlice';
-import { clearConstructor } from '../../services/slices/ConstructorSlice';
+import { constructorActions } from '../../services/slices/ConstructorSlice';
 import { userSelectors } from '../../services/slices/UserSlice';
 
 export const BurgerConstructor: FC = () => {
@@ -37,7 +37,7 @@ export const BurgerConstructor: FC = () => {
 
   const closeOrderModal = () => {
     dispatch(orderActions.clearOrder());
-    dispatch(clearConstructor());
+    dispatch(constructorActions.clearConstructor());
   };
 
   const price = useMemo(
