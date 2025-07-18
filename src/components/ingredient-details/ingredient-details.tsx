@@ -3,12 +3,13 @@ import { Preloader } from '../ui/preloader';
 import { IngredientDetailsUI } from '../ui/ingredient-details';
 import { useSelector } from '../../services/store';
 import { useParams } from 'react-router-dom';
+import { ingredientsSelectors } from '../../services/slices/IngridientSlice';
 
 export const IngredientDetails: FC = () => {
   const { id } = useParams();
   const ingredientData = useSelector(
-    (state) => state.ingredientsReducer
-  )?.ingredients?.find((el) => el._id === id);
+    ingredientsSelectors.selectIngredients
+  )?.find((el) => el._id === id);
 
   if (!ingredientData) {
     return <Preloader />;

@@ -4,9 +4,10 @@ import { useInView } from 'react-intersection-observer';
 import { TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
 import { useSelector } from '../../services/store';
+import { ingredientsSelectors } from '../../services/slices/IngridientSlice';
 
 export const BurgerIngredients: FC = () => {
-  const { ingredients } = useSelector((state) => state.ingredientsReducer);
+  const ingredients = useSelector(ingredientsSelectors.selectIngredients);
 
   const buns = ingredients?.filter((el) => el.type === 'bun') ?? [];
   const mains = ingredients?.filter((el) => el.type === 'main') ?? [];
