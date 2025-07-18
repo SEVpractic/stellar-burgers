@@ -98,4 +98,3 @@ export const orderSlice = createSlice({
 
 export const orderSelectors = orderSlice.selectors;
 export const orderActions = orderSlice.actions;
-export const { clearOrder } = orderSlice.actions;

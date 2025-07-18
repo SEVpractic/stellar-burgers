@@ -4,8 +4,8 @@ import { BurgerConstructorUI } from '@ui';
 import { useSelector, useDispatch } from '../../services/store';
 import { useNavigate } from 'react-router-dom';
 import {
-  clearOrder,
   createOrderAsync,
+  orderActions,
   orderSelectors
 } from '../../services/slices/OrderSlice';
 import { clearConstructor } from '../../services/slices/ConstructorSlice';
@@ -20,7 +20,7 @@ export const BurgerConstructor: FC = () => {
   const orderModalData = useSelector(orderSelectors.selectOrderModalData);
 
   useEffect(() => {
-    dispatch(clearOrder());
+    dispatch(orderActions.clearOrder());
   }, [dispatch]);
 
   const onOrderClick = () => {
@@ -36,7 +36,7 @@ export const BurgerConstructor: FC = () => {
   };
 
   const closeOrderModal = () => {
-    dispatch(clearOrder());
+    dispatch(orderActions.clearOrder());
     dispatch(clearConstructor());
   };
 
