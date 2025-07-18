@@ -21,7 +21,7 @@ export const Login: FC = () => {
 
   const [errorText, setErrorText] = useState('');
 
-  const error = useSelector(userSelectors.selectUserError);
+  const error = useSelector(userSelectors.selectError);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
