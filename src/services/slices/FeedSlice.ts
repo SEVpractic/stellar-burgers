@@ -4,7 +4,7 @@ import { TOrder } from '@utils-types';
 
 export const getFeedsAsync = createAsyncThunk('feeds/get', getFeedsApi);
 
-export type TFeedState = {
+type TFeedState = {
   orders: TOrder[];
   total: number;
   totalToday: number;
@@ -24,6 +24,13 @@ export const feedSlice = createSlice({
   name: 'feed',
   initialState: initFeedState,
   reducers: {},
+  selectors: {
+    selectOrders: (state) => state.orders,
+    selectTotal: (state) => state.total,
+    selectTotalToday: (state) => state.totalToday,
+    selectLoading: (state) => state.loading,
+    selectError: (state) => state.error
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getFeedsAsync.fulfilled, (state, action) => {
@@ -47,4 +54,4 @@ export const feedSlice = createSlice({
   }
 });
 
-export const feedReducer = feedSlice.reducer;
+export const feedSelectors = feedSlice.selectors;
