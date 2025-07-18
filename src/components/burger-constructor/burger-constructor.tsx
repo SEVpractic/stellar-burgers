@@ -3,7 +3,11 @@ import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useSelector, useDispatch } from '../../services/store';
 import { useNavigate } from 'react-router-dom';
-import { clearOrder, createOrderAsync } from '../../services/slices/OrderSlice';
+import {
+  clearOrder,
+  createOrderAsync,
+  orderSelectors
+} from '../../services/slices/OrderSlice';
 import { clearConstructor } from '../../services/slices/ConstructorSlice';
 import { userSelectors } from '../../services/slices/UserSlice';
 
@@ -12,9 +16,8 @@ export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
   const user = useSelector(userSelectors.selectUser);
   const constructorItems = useSelector((state) => state.constructorReducer);
-  const { orderRequest, orderModalData } = useSelector(
-    (state) => state.orderReducer
-  );
+  const orderRequest = useSelector(orderSelectors.selectOrderRequest);
+  const orderModalData = useSelector(orderSelectors.selectOrderModalData);
 
   useEffect(() => {
     dispatch(clearOrder());

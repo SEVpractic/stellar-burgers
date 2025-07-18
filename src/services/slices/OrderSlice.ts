@@ -39,6 +39,13 @@ export const orderSlice = createSlice({
   reducers: {
     clearOrder: () => initOrderState
   },
+  selectors: {
+    selectOrderModalData: (state) => state.orderModalData,
+    selectOrderRequest: (state) => state.orderRequest,
+    selectUserOrders: (state) => state.userOrders,
+    selectLoading: (state) => state.loading,
+    selectError: (state) => state.error
+  },
   extraReducers: (builder) => {
     builder
       .addCase(createOrderAsync.fulfilled, (state, action) => {
@@ -89,5 +96,6 @@ export const orderSlice = createSlice({
   }
 });
 
-export const orderReducer = orderSlice.reducer;
+export const orderSelectors = orderSlice.selectors;
+export const orderActions = orderSlice.actions;
 export const { clearOrder } = orderSlice.actions;

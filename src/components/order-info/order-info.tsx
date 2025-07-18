@@ -4,13 +4,16 @@ import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
 import { useSelector, useDispatch } from '../../services/store';
 import { useParams } from 'react-router-dom';
-import { getOrderAsync } from '../../services/slices/OrderSlice';
+import {
+  getOrderAsync,
+  orderSelectors
+} from '../../services/slices/OrderSlice';
 import { ingredientsSelectors } from '../../services/slices/IngridientSlice';
 
 export const OrderInfo: FC = () => {
   const dispatch = useDispatch();
   const ingredients = useSelector(ingredientsSelectors.selectIngredients);
-  const { orderModalData } = useSelector((state) => state.orderReducer);
+  const orderModalData = useSelector(orderSelectors.selectOrderModalData);
   const id = Number(useParams().number);
 
   useEffect(() => {
