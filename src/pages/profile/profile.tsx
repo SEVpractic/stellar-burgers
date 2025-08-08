@@ -1,24 +1,34 @@
 import { ProfileUI } from '@ui-pages';
-import { FC, SyntheticEvent, useEffect, useState } from 'react';
+import { FC, SyntheticEvent, useEffect } from 'react';
+import { useDispatch, useSelector } from '../../services/store';
+import { TUser } from '@utils-types';
+import {
+  updateUserAsync,
+  userSelectors
+} from '../../services/slices/UserSlice';
+import { useForm } from '../../hooks/useForm';
+
+const initUser: TUser & { password: string } = {
+  email: '',
+  name: '',
+  password: ''
+};
 
 export const Profile: FC = () => {
-  /** TODO: взять переменную из стора */
-  const user = {
-    name: '',
-    email: ''
-  };
+  const dispatch = useDispatch();
+  const user = useSelector(userSelectors.selectUser);
 
-  const [formValue, setFormValue] = useState({
-    name: user.name,
-    email: user.email,
-    password: ''
-  });
+  const {
+    values: formValue,
+    handleChange: setFormValue,
+    setValues: setFormData
+  } = useForm(initUser);
 
   useEffect(() => {
-    setFormValue((prevState) => ({
+    setFormData((prevState) => ({
       ...prevState,
-      name: user?.name || '',
-      email: user?.email || ''
+      name: user?.name ?? '',
+      email: user?.email ?? ''
     }));
   }, [user]);
 
@@ -29,22 +39,12 @@ export const Profile: FC = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
+    dispatch(updateUserAsync(formValue));
   };
 
   const handleCancel = (e: SyntheticEvent) => {
     e.preventDefault();
-    setFormValue({
-      name: user.name,
-      email: user.email,
-      password: ''
-    });
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormValue((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value
-    }));
+    setFormData(initUser);
   };
 
   return (
@@ -53,9 +53,7 @@ export const Profile: FC = () => {
       isFormChanged={isFormChanged}
       handleCancel={handleCancel}
       handleSubmit={handleSubmit}
-      handleInputChange={handleInputChange}
+      handleInputChange={setFormValue}
     />
   );
-
-  return null;
 };
