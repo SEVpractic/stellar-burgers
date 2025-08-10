@@ -4,7 +4,7 @@ import { TOrder } from '@utils-types';
 
 export const getFeedsAsync = createAsyncThunk('feeds/get', getFeedsApi);
 
-type TFeedState = {
+export type TFeedState = {
   orders: TOrder[];
   total: number;
   totalToday: number;
@@ -49,7 +49,7 @@ export const feedSlice = createSlice({
         state.total = 0;
         state.totalToday = 0;
         state.loading = false;
-        state.error == action.error.message || null;
+        state.error = action.error.message || null;
       });
   }
 });
