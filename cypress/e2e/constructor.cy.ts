@@ -10,7 +10,7 @@ describe('stellar-burgers', function () {
       'getIngredients'
     );
 
-    cy.visit('http://localhost:4000/');
+    cy.visit('');
     cy.wait('@getUser');
     cy.wait('@getIngredients');
 
