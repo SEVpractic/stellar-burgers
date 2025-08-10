@@ -114,3 +114,19 @@ export const mockUserOrders = {
   total: 85740,
   totalToday: 77
 };
+
+export const mockUserData = {
+  email: 'momo@mailforspam.com',
+  name: 'momo'
+};
+
+export const mockUserRegisterData = {
+  email: 'momo@mailforspam.com',
+  name: 'momo',
+  password: '123QwE'
+}
+
+export const mockLoginData = {
+  email: 'momo@mailforspam.com',
+  password: '123QwE'
+}

@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for services/slices/IngridientSlice.ts</title>
+    <title>Code coverage report for services/slices/FeedSlice.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">services/slices</a> IngridientSlice.ts</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">services/slices</a> FeedSlice.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>49/49</span>
+                <span class='fraction'>57/57</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">25% </span>
+                <span class="strong">16.66% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/4</span>
+                <span class='fraction'>1/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>49/49</span>
+                <span class='fraction'>57/57</span>
             </div>
         
             
@@ -112,7 +112,15 @@
 <a name='L47'></a><a href='#L47'>47</a>
 <a name='L48'></a><a href='#L48'>48</a>
 <a name='L49'></a><a href='#L49'>49</a>
-<a name='L50'></a><a href='#L50'>50</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -161,55 +169,71 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { getIngredientsApi } from '@api';
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { getFeedsApi } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { TIngredient } from '@utils-types';
+import { TOrder } from '@utils-types';
 &nbsp;
-export const getIngredientsAsync = createAsyncThunk(
-  'ingredients/getIngredients',
-  getIngredientsApi
-);
+export const getFeedsAsync = createAsyncThunk('feeds/get', getFeedsApi);
 &nbsp;
-export type TIngredientsState = {
-  ingredients: TIngredient[];
+export type TFeedState = {
+  orders: TOrder[];
+  total: number;
+  totalToday: number;
   loading: boolean;
   error: string | null;
 };
 &nbsp;
-const initialIngredientsState: TIngredientsState = {
-  ingredients: [],
+const initFeedState: TFeedState = {
+  orders: [],
+  total: 0,
+  totalToday: 0,
   loading: false,
   error: null
 };
 &nbsp;
-export const ingredientsSlice = createSlice({
-  name: 'ingredients',
-  initialState: initialIngredientsState,
+export const feedSlice = createSlice({
+  name: 'feed',
+  initialState: initFeedState,
   reducers: {},
   selectors: {
-    selectIngredients: <span class="fstat-no" title="function not covered" >(state) =&gt; state.</span>ingredients,
+    selectOrders: <span class="fstat-no" title="function not covered" >(state) =&gt; state.</span>orders,
+    selectTotal: <span class="fstat-no" title="function not covered" >(state) =&gt; state.</span>total,
+    selectTotalToday: <span class="fstat-no" title="function not covered" >(state) =&gt; state.</span>totalToday,
     selectLoading: <span class="fstat-no" title="function not covered" >(state) =&gt; state.</span>loading,
     selectError: <span class="fstat-no" title="function not covered" >(state) =&gt; state.</span>error
   },
   extraReducers: (builder) =&gt; {
     builder
-      .addCase(getIngredientsAsync.fulfilled, (state, action) =&gt; {
+      .addCase(getFeedsAsync.fulfilled, (state, action) =&gt; {
+        state.orders = action.payload.orders;
+        state.total = action.payload.total;
+        state.totalToday = action.payload.totalToday;
         state.loading = false;
         state.error = null;
-        state.ingredients = action.payload;
       })
-      .addCase(getIngredientsAsync.pending, (state) =&gt; {
+      .addCase(getFeedsAsync.pending, (state) =&gt; {
         state.loading = true;
         state.error = null;
       })
-      .addCase(getIngredientsAsync.rejected, (state, action) =&gt; {
+      .addCase(getFeedsAsync.rejected, (state, action) =&gt; {
+        state.orders = [];
+        state.total = 0;
+        state.totalToday = 0;
         state.loading = false;
         state.error = action.error.message<span class="branch-0 cbranch-no" title="branch not covered" > || null;</span>
       });
   }
 });
 &nbsp;
-export const ingredientsSelectors = ingredientsSlice.selectors;
+export const feedSelectors = feedSlice.selectors;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->

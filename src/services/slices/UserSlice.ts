@@ -79,7 +79,7 @@ export const updateUserAsync = createAsyncThunk(
   }
 );
 
-type TUserState = {
+export type TUserState = {
   user: TUser | null;
   loading: boolean;
   error: string | null;
@@ -124,7 +124,7 @@ export const userSlice = createSlice({
       .addCase(checkUserAuthAsync.rejected, (state, action) => {
         state.user = null;
         state.loading = false;
-        state.error == action.error || null;
+        state.error = action.error.message || null;
         state.isAuthChecked = true;
       });
     builder
