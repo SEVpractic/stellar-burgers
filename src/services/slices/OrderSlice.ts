@@ -60,7 +60,7 @@ export const orderSlice = createSlice({
       })
       .addCase(createOrderAsync.rejected, (state, action) => {
         state.loading = false;
-        state.error == action.error.message || null;
+        state.error = action.error.message || null;
         state.orderRequest = false;
       });
     builder
@@ -75,7 +75,7 @@ export const orderSlice = createSlice({
       })
       .addCase(getOrderAsync.rejected, (state, action) => {
         state.loading = false;
-        state.error == action.error.message || null;
+        state.error = action.error.message || null;
         state.orderModalData = null;
       });
     builder
@@ -90,7 +90,7 @@ export const orderSlice = createSlice({
       })
       .addCase(getUsersOrdersAsync.rejected, (state, action) => {
         state.loading = false;
-        state.error == action.error.message || null;
+        state.error = action.error.message || null;
         state.userOrders = [];
       });
   }

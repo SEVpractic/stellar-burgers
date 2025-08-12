@@ -1,0 +1,9 @@
+{
+    "success": true,
+    "accessToken": "mockedAccessToken",
+    "refreshToken": "mockedRefreshToken",
+    "user": {
+        "email": "momo@mailforspam.com",
+        "name": "momo"
+    }
+}

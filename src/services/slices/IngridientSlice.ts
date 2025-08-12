@@ -7,7 +7,7 @@ export const getIngredientsAsync = createAsyncThunk(
   getIngredientsApi
 );
 
-type TIngredientsState = {
+export type TIngredientsState = {
   ingredients: TIngredient[];
   loading: boolean;
   error: string | null;
@@ -41,7 +41,7 @@ export const ingredientsSlice = createSlice({
       })
       .addCase(getIngredientsAsync.rejected, (state, action) => {
         state.loading = false;
-        state.error == action.error.message || null;
+        state.error = action.error.message || null;
       });
   }
 });
